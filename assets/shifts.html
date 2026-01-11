@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shifts | Oceana Operation Central</title>
+  <link href="assets/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gray-800 h-screen p-4">
+    <h2 class="text-xl font-bold mb-6">Menu</h2>
+    <ul class="flex flex-col gap-2">
+      <li><a href="index.html" class="hover:text-purple-400">Dashboard</a></li>
+      <li><a href="members.html" class="hover:text-purple-400">Members</a></li>
+      <li><a href="shifts.html" class="hover:text-purple-400">Shifts</a></li>
+      <li><a href="documents.html" class="hover:text-purple-400">Documents</a></li>
+      <li><a href="security.html" class="hover:text-purple-400">Security</a></li>
+      <li><a href="reports.html" class="hover:text-purple-400">Reports</a></li>
+      <li><a href="news.html" class="hover:text-purple-400">News</a></li>
+      <li><a href="admin.html" class="hover:text-purple-400">Admin</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    <h1 class="text-3xl font-bold mb-4">Shifts Report</h1>
+
+    <!-- Add Shift Button (DEV & MG) -->
+    <button id="addShiftBtn" class="bg-purple-600 hover:bg-purple-700 p-2 rounded mb-4 font-bold hidden">
+      Add Shift
+    </button>
+
+    <!-- Shifts Table -->
+    <div class="overflow-auto rounded bg-gray-700 p-4">
+      <table class="min-w-full">
+        <thead>
+          <tr class="text-left">
+            <th class="px-4 py-2">User</th>
+            <th class="px-4 py-2">Shift</th>
+            <th class="px-4 py-2">Date</th>
+            <th class="px-4 py-2">Status</th>
+            <th class="px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="shiftsTable" class="divide-y divide-gray-600">
+          <!-- Data will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="assets/script.js"></script>
+  <script>
+    function checkRole(rolesAllowed) {
+      const userRole = localStorage.getItem('userRole'); // จาก AuthPro token/session
+      return rolesAllowed.includes(userRole);
+    }
+
+    // แสดงปุ่ม Add Shift เฉพาะ DEV และ MG
+    if (checkRole(['DEV','MG'])) {
+      document.getElementById('addShiftBtn').classList.remove('hidden');
+    }
+
+    async function renderShifts() {
+      const shifts = await fetchShifts(); // API placeholder
+      const tbody = document.getElementById('shiftsTable');
+      tbody.innerHTML = shifts.map(shift => `
+        <tr>
+          <td class="px-4 py-2">${shift.user}</td>
+          <td class="px-4 py-2">${shift.shift}</td>
+          <td class="px-4 py-2">${shift.date || '2026-01-10'}</td>
+          <td class="px-4 py-2">
+            <span class="${shift.status === 'Completed' ? 'text-green-400' : shift.status === 'Pending' ? 'text-yellow-400' : 'text-red-500'}">
+              ${shift.status}
+            </span>
+          </td>
+          <td class="px-4 py-2 space-x-2">
+            ${checkRole(['DEV','MG']) ? `<button onclick="editShift('${shift.user}')" class="bg-yellow-500 px-2 rounded">Edit</button>` : ''}
+            ${checkRole(['DEV']) ? `<button onclick="deleteShift('${shift.user}')" class="bg-red-600 px-2 rounded">Delete</button>` : ''}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function editShift(user) {
+      alert(`Edit shift for ${user} (implement API call)`);
+    }
+
+    function deleteShift(user) {
+      alert(`Delete shift for ${user} (implement API call)`);
+    }
+
+    renderShifts();
+  </script>
+</body>
+</html>
