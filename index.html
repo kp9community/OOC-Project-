@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Oceana Operation Central | KP9community</title>
+  <link href="assets/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gray-800 h-screen p-4">
+    <h2 class="text-xl font-bold mb-6">Menu</h2>
+    <ul class="flex flex-col gap-2">
+      <li><a href="index.html" class="hover:text-purple-400">Dashboard</a></li>
+      <li><a href="members.html" class="hover:text-purple-400">Members</a></li>
+      <li><a href="shifts.html" class="hover:text-purple-400">Shifts</a></li>
+      <li><a href="documents.html" class="hover:text-purple-400">Documents</a></li>
+      <li><a href="security.html" class="hover:text-purple-400">Security</a></li>
+      <li><a href="reports.html" class="hover:text-purple-400">Reports</a></li>
+      <li><a href="news.html" class="hover:text-purple-400">News</a></li>
+      <li><a href="admin.html" class="hover:text-purple-400">Admin</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    <h1 class="text-3xl font-bold mb-4">Dashboard</h1>
+    <div class="grid grid-cols-3 gap-4">
+      <div class="bg-gray-700 p-4 rounded shadow">Total Members: <span id="totalMembers">0</span></div>
+      <div class="bg-gray-700 p-4 rounded shadow">Online: <span id="onlineMembers">0</span></div>
+      <div class="bg-gray-700 p-4 rounded shadow">Active Shifts: <span id="activeShifts">0</span></div>
+    </div>
+    <div class="mt-6">
+      <h2 class="text-xl font-semibold mb-2">Recent Logs</h2>
+      <ul id="recentLogs" class="bg-gray-700 p-4 rounded space-y-1 max-h-64 overflow-auto"></ul>
+    </div>
+  </main>
+
+  <script src="assets/script.js"></script>
+  <script>
+    async function fetchDashboard() {
+      const data = {
+        totalMembers: 120,
+        onlineMembers: 50,
+        activeShifts: 8,
+        logs: [
+          'User A added 100 points to User B',
+          'User C requested leave (Approved)',
+          'Security Alert: Server latency high'
+        ]
+      };
+      document.getElementById('totalMembers').textContent = data.totalMembers;
+      document.getElementById('onlineMembers').textContent = data.onlineMembers;
+      document.getElementById('activeShifts').textContent = data.activeShifts;
+      document.getElementById('recentLogs').innerHTML = data.logs.map(l => `<li>${l}</li>`).join('');
+    }
+    fetchDashboard();
+  </script>
+</body>
+</html>
