@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reports | Oceana Operation Central</title>
+  <link href="assets/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gray-800 h-screen p-4">
+    <h2 class="text-xl font-bold mb-6">Menu</h2>
+    <ul class="flex flex-col gap-2">
+      <li><a href="index.html" class="hover:text-purple-400">Dashboard</a></li>
+      <li><a href="members.html" class="hover:text-purple-400">Members</a></li>
+      <li><a href="shifts.html" class="hover:text-purple-400">Shifts</a></li>
+      <li><a href="documents.html" class="hover:text-purple-400">Documents</a></li>
+      <li><a href="security.html" class="hover:text-purple-400">Security</a></li>
+      <li><a href="reports.html" class="hover:text-purple-400">Reports</a></li>
+      <li><a href="news.html" class="hover:text-purple-400">News</a></li>
+      <li><a href="admin.html" class="hover:text-purple-400">Admin</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    <h1 class="text-3xl font-bold mb-4">System Reports & Analytics</h1>
+
+    <!-- Export Buttons (DEV/ADM) -->
+    <div class="mb-4 space-x-2">
+      <button id="exportCSV" class="bg-green-500 hover:bg-green-600 px-3 py-1 rounded hidden">Export CSV</button>
+      <button id="exportPDF" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded hidden">Export PDF</button>
+    </div>
+
+    <!-- Reports Table -->
+    <div class="overflow-auto rounded bg-gray-700 p-4">
+      <table class="min-w-full">
+        <thead>
+          <tr class="text-left">
+            <th class="px-4 py-2">Category</th>
+            <th class="px-4 py-2">Count</th>
+            <th class="px-4 py-2">Last Updated</th>
+          </tr>
+        </thead>
+        <tbody id="reportsTable" class="divide-y divide-gray-600">
+          <!-- Data will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="assets/script.js"></script>
+  <script>
+    function checkRole(rolesAllowed) {
+      const userRole = localStorage.getItem('userRole'); // จาก AuthPro
+      return rolesAllowed.includes(userRole);
+    }
+
+    // Show export buttons only for DEV/ADM
+    if (checkRole(['DEV','ADM'])) {
+      document.getElementById('exportCSV').classList.remove('hidden');
+      document.getElementById('exportPDF').classList.remove('hidden');
+    }
+
+    async function renderReports() {
+      // ตัวอย่าง placeholder สำหรับ Analytics
+      const reports = [
+        { category: 'Members', count: 120, updated: '2026-01-11' },
+        { category: 'Shifts', count: 45, updated: '2026-01-11' },
+        { category: 'Documents', count: 30, updated: '2026-01-11' },
+        { category: 'Security Alerts', count: 10, updated: '2026-01-11' },
+      ];
+
+      const tbody = document.getElementById('reportsTable');
+      tbody.innerHTML = reports.map(r => `
+        <tr>
+          <td class="px-4 py-2">${r.category}</td>
+          <td class="px-4 py-2">${r.count}</td>
+          <td class="px-4 py-2">${r.updated}</td>
+        </tr>
+      `).join('');
+    }
+
+    function exportCSV() {
+      alert('Export CSV (implement API or client-side CSV generation)');
+    }
+
+    function exportPDF() {
+      alert('Export PDF (implement jsPDF or backend PDF generation)');
+    }
+
+    document.getElementById('exportCSV').addEventListener('click', exportCSV);
+    document.getElementById('exportPDF').addEventListener('click', exportPDF);
+
+    renderReports();
+  </script>
+</body>
+</html>
