@@ -1,0 +1,105 @@
+/* ======================
+   Global
+====================== */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background-color: #1e1e2f;
+  color: #ffffff;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* ======================
+   Sidebar
+====================== */
+aside {
+  background-color: #2a2a3e;
+}
+
+aside h2 {
+  color: #fff;
+}
+
+aside ul li a {
+  display: block;
+  padding: 0.5rem 0;
+}
+
+aside ul li a:hover {
+  color: #b57dfb;
+}
+
+/* ======================
+   Tables
+====================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #3a3a5a;
+  padding: 0.5rem;
+}
+
+td {
+  padding: 0.5rem;
+}
+
+tr:nth-child(even) {
+  background-color: #2e2e4a;
+}
+
+/* ======================
+   Buttons
+====================== */
+button {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+.bg-purple-600 { background-color: #7c3aed; }
+.bg-purple-700 { background-color: #6d28d9; }
+.bg-green-500 { background-color: #22c55e; }
+.bg-yellow-500 { background-color: #eab308; }
+.bg-red-600 { background-color: #dc2626; }
+
+/* ======================
+   Cards / Panels
+====================== */
+.bg-gray-700 { background-color: #3a3a5a; }
+.bg-gray-600 { background-color: #2e2e4a; }
+.shadow { box-shadow: 0 2px 6px rgba(0,0,0,0.5); }
+.rounded { border-radius: 0.5rem; }
+.p-4 { padding: 1rem; }
+.p-2 { padding: 0.5rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+
+/* ======================
+   Responsive
+====================== */
+@media screen and (max-width: 768px) {
+  aside {
+    width: 200px;
+  }
+  main {
+    padding: 1rem;
+  }
+}
