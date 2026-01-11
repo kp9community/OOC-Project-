@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Documents | Oceana Operation Central</title>
+  <link href="assets/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gray-800 h-screen p-4">
+    <h2 class="text-xl font-bold mb-6">Menu</h2>
+    <ul class="flex flex-col gap-2">
+      <li><a href="index.html" class="hover:text-purple-400">Dashboard</a></li>
+      <li><a href="members.html" class="hover:text-purple-400">Members</a></li>
+      <li><a href="shifts.html" class="hover:text-purple-400">Shifts</a></li>
+      <li><a href="documents.html" class="hover:text-purple-400">Documents</a></li>
+      <li><a href="security.html" class="hover:text-purple-400">Security</a></li>
+      <li><a href="reports.html" class="hover:text-purple-400">Reports</a></li>
+      <li><a href="news.html" class="hover:text-purple-400">News</a></li>
+      <li><a href="admin.html" class="hover:text-purple-400">Admin</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    <h1 class="text-3xl font-bold mb-4">Documents</h1>
+
+    <!-- Add Document Button (DEV/ADM) -->
+    <button id="addDocBtn" class="bg-purple-600 hover:bg-purple-700 p-2 rounded mb-4 font-bold hidden">
+      Add Document
+    </button>
+
+    <!-- Documents Table -->
+    <div class="overflow-auto rounded bg-gray-700 p-4">
+      <table class="min-w-full">
+        <thead>
+          <tr class="text-left">
+            <th class="px-4 py-2">Name</th>
+            <th class="px-4 py-2">Type</th>
+            <th class="px-4 py-2">Created</th>
+            <th class="px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="documentsTable" class="divide-y divide-gray-600">
+          <!-- Data will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="assets/script.js"></script>
+  <script>
+    function checkRole(rolesAllowed) {
+      const userRole = localStorage.getItem('userRole'); // จาก AuthPro
+      return rolesAllowed.includes(userRole);
+    }
+
+    // Show Add Document button only for DEV/ADM
+    if (checkRole(['DEV','ADM'])) {
+      document.getElementById('addDocBtn').classList.remove('hidden');
+    }
+
+    async function renderDocuments() {
+      const docs = await fetchDocuments(); // API placeholder
+      const tbody = document.getElementById('documentsTable');
+      tbody.innerHTML = docs.map(doc => `
+        <tr>
+          <td class="px-4 py-2">${doc.name}</td>
+          <td class="px-4 py-2">${doc.type}</td>
+          <td class="px-4 py-2">${doc.created}</td>
+          <td class="px-4 py-2 space-x-2">
+            <button onclick="downloadDoc('${doc.name}')" class="bg-green-500 px-2 rounded">Download</button>
+            ${checkRole(['DEV','ADM']) ? `<button onclick="editDoc('${doc.name}')" class="bg-yellow-500 px-2 rounded">Edit</button>` : ''}
+            ${checkRole(['DEV']) ? `<button onclick="deleteDoc('${doc.name}')" class="bg-red-600 px-2 rounded">Delete</button>` : ''}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function downloadDoc(name) {
+      alert(`Download document ${name} (implement PDF/Word/Excel generation)`);
+    }
+
+    function editDoc(name) {
+      alert(`Edit document ${name} (implement API call)`);
+    }
+
+    function deleteDoc(name) {
+      alert(`Delete document ${name} (implement API call)`);
+    }
+
+    renderDocuments();
+  </script>
+</body>
+</html>
