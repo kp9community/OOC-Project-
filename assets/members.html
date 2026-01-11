@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Members | Oceana Operation Central</title>
+  <link href="assets/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gray-800 h-screen p-4">
+    <h2 class="text-xl font-bold mb-6">Menu</h2>
+    <ul class="flex flex-col gap-2">
+      <li><a href="index.html" class="hover:text-purple-400">Dashboard</a></li>
+      <li><a href="members.html" class="hover:text-purple-400">Members</a></li>
+      <li><a href="shifts.html" class="hover:text-purple-400">Shifts</a></li>
+      <li><a href="documents.html" class="hover:text-purple-400">Documents</a></li>
+      <li><a href="security.html" class="hover:text-purple-400">Security</a></li>
+      <li><a href="reports.html" class="hover:text-purple-400">Reports</a></li>
+      <li><a href="news.html" class="hover:text-purple-400">News</a></li>
+      <li><a href="admin.html" class="hover:text-purple-400">Admin</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    <h1 class="text-3xl font-bold mb-4">Members</h1>
+
+    <!-- Add Member Button (DEV only) -->
+    <button id="addMemberBtn" class="bg-purple-600 hover:bg-purple-700 p-2 rounded mb-4 font-bold hidden">
+      Add Member
+    </button>
+
+    <!-- Members Table -->
+    <div class="overflow-auto rounded bg-gray-700 p-4">
+      <table class="min-w-full">
+        <thead>
+          <tr class="text-left">
+            <th class="px-4 py-2">ID</th>
+            <th class="px-4 py-2">Username</th>
+            <th class="px-4 py-2">Role</th>
+            <th class="px-4 py-2">Points</th>
+            <th class="px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="membersTable" class="divide-y divide-gray-600">
+          <!-- Data will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="assets/script.js"></script>
+  <script>
+    async function renderMembers() {
+      const members = await fetchMembers(); // Fetch from API placeholder
+      const tbody = document.getElementById('membersTable');
+      tbody.innerHTML = members.map(member => `
+        <tr>
+          <td class="px-4 py-2">${member.id}</td>
+          <td class="px-4 py-2">${member.name}</td>
+          <td class="px-4 py-2">${member.role}</td>
+          <td class="px-4 py-2">${member.points}</td>
+          <td class="px-4 py-2 space-x-2">
+            ${checkRole(['DEV', 'ADM']) ? `<button onclick="editMember(${member.id})" class="bg-yellow-500 px-2 rounded">Edit</button>` : ''}
+            ${checkRole(['DEV']) ? `<button onclick="deleteMember(${member.id})" class="bg-red-600 px-2 rounded">Delete</button>` : ''}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function checkRole(rolesAllowed) {
+      const userRole = localStorage.getItem('userRole'); // Role จาก AuthPro
+      return rolesAllowed.includes(userRole);
+    }
+
+    // Show Add Member button only to DEV
+    if (checkRole(['DEV'])) {
+      document.getElementById('addMemberBtn').classList.remove('hidden');
+    }
+
+    function editMember(id) {
+      alert(`Edit member ${id} (implement API call)`);
+    }
+
+    function deleteMember(id) {
+      alert(`Delete member ${id} (implement API call)`);
+    }
+
+    renderMembers();
+  </script>
+</body>
+</html>
