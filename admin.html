@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin | Oceana Operation Central</title>
+  <link href="assets/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gray-800 h-screen p-4">
+    <h2 class="text-xl font-bold mb-6">Menu</h2>
+    <ul class="flex flex-col gap-2">
+      <li><a href="index.html" class="hover:text-purple-400">Dashboard</a></li>
+      <li><a href="members.html" class="hover:text-purple-400">Members</a></li>
+      <li><a href="shifts.html" class="hover:text-purple-400">Shifts</a></li>
+      <li><a href="documents.html" class="hover:text-purple-400">Documents</a></li>
+      <li><a href="security.html" class="hover:text-purple-400">Security</a></li>
+      <li><a href="reports.html" class="hover:text-purple-400">Reports</a></li>
+      <li><a href="news.html" class="hover:text-purple-400">News</a></li>
+      <li><a href="admin.html" class="hover:text-purple-400">Admin</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    <h1 class="text-3xl font-bold mb-4">Admin / Dev Panel</h1>
+
+    <!-- Add User (DEV only) -->
+    <button id="addUserBtn" class="bg-purple-600 hover:bg-purple-700 p-2 rounded mb-4 font-bold hidden">
+      Add User
+    </button>
+
+    <!-- Users Table -->
+    <div class="overflow-auto rounded bg-gray-700 p-4 mb-6">
+      <h2 class="text-xl font-semibold mb-2">Manage Users</h2>
+      <table class="min-w-full">
+        <thead>
+          <tr class="text-left">
+            <th class="px-4 py-2">Username</th>
+            <th class="px-4 py-2">Role</th>
+            <th class="px-4 py-2">Points</th>
+            <th class="px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="adminUsersTable" class="divide-y divide-gray-600"></tbody>
+      </table>
+    </div>
+
+    <!-- System Overview -->
+    <div class="grid grid-cols-3 gap-4">
+      <div class="bg-gray-600 p-4 rounded shadow">Total Members: <span id="totalMembersAdmin">0</span></div>
+      <div class="bg-gray-600 p-4 rounded shadow">Active Shifts: <span id="activeShiftsAdmin">0</span></div>
+      <div class="bg-gray-600 p-4 rounded shadow">Pending Security Alerts: <span id="pendingAlertsAdmin">0</span></div>
+    </div>
+  </main>
+
+  <script src="assets/script.js"></script>
+  <script>
+    function checkRole(rolesAllowed) {
+      const userRole = localStorage.getItem('userRole'); // จาก AuthPro
+      return rolesAllowed.includes(userRole);
+    }
+
+    // Show Add User button only DEV
+    if (checkRole(['DEV'])) {
+      document.getElementById('addUserBtn').classList.remove('hidden');
+    }
+
+    async function renderAdminUsers() {
+      const users = await fetchMembers(); // ใช้ fetchMembers placeholder
+      const tbody = document.getElementById('adminUsersTable');
+      tbody.innerHTML = users.map(u => `
+        <tr>
+          <td class="px-4 py-2">${u.name}</td>
+          <td class="px-4 py-2">${u.role}</td>
+          <td class="px-4 py-2">${u.points}</td>
+          <td class="px-4 py-2 space-x-2">
+            ${checkRole(['DEV','ADM']) ? `<button onclick="editUser('${u.name}')" class="bg-yellow-500 px-2 rounded">Edit</button>` : ''}
+            ${checkRole(['DEV']) ? `<button onclick="deleteUser('${u.name}')" class="bg-red-600 px-2 rounded">Delete</button>` : ''}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function editUser(name) {
+      alert(`Edit user ${name} (implement API call)`);
+    }
+
+    function deleteUser(name) {
+      alert(`Delete user ${name} (implement API call)`);
+    }
+
+    document.getElementById('addUserBtn').addEventListener('click', () => {
+      alert('Add user (DEV only, implement form/API)');
+    });
+
+    async function renderSystemOverview() {
+      const totalMembers = 120; // placeholder
+      const activeShifts = 8;
+      const pendingAlerts = 10;
+
+      document.getElementById('totalMembersAdmin').textContent = totalMembers;
+      document.getElementById('activeShiftsAdmin').textContent = activeShifts;
+      document.getElementById('pendingAlertsAdmin').textContent = pendingAlerts;
+    }
+
+    renderAdminUsers();
+    renderSystemOverview();
+  </script>
+</body>
+</html>
